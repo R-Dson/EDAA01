@@ -1,5 +1,7 @@
 package lpt;
 
+
+
 public class Job {
 	private String name;
 	private int time;

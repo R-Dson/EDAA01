@@ -20,6 +20,7 @@ public class TestScheduler {
 		Scheduler s = new Scheduler(m);
 		s.makeSchedule(jobList);
 		s.printSchedule();
+		
 	}
 
 }
