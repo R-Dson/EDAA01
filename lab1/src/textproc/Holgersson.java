@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Holgersson {
-
+	
 	public static final String[] REGIONS = { "blekinge", "bohuslän", "dalarna", "dalsland", "gotland", "gästrikland",
 			"halland", "hälsingland", "härjedalen", "jämtland", "lappland", "medelpad", "närke", "skåne", "småland",
 			"södermanland", "uppland", "värmland", "västerbotten", "västergötland", "västmanland", "ångermanland",

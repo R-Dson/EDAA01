@@ -17,15 +17,15 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	 * 			to this queue, else false
 	 */
 	public boolean offer(E e) {
-		return false;
+		return list.add(e);
 	}
 
 	/**	
 	 * Returns the number of elements in this queue
 	 * @return the number of elements in this queue
 	 */
-	public int size() {		
-		return 0;
+	public int size() {	
+		return list.size();
 	}
 	
 	/**	
@@ -35,7 +35,7 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	 * 			if this queue is empty
 	 */
 	public E peek() {
-		return null;
+		return list.peek();
 	}
 
 	/**	
@@ -45,7 +45,7 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	 * @return 	the head of this queue, or null if the queue is empty 
 	 */
 	public E poll() {
-		return null;
+		return list.poll();
 	}
 
 	/**	
@@ -53,7 +53,7 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	 * @return an iterator over the elements in this queue
 	 */	
 	public Iterator<E> iterator() {
-		return null;
+		return list.iterator();
 	}
 
 }

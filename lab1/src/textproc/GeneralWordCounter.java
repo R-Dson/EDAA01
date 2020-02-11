@@ -11,7 +11,7 @@ import java.util.List;
 public class GeneralWordCounter implements TextProcessor {
 	
 	Set<String> stopwords = new HashSet<String>();
-	Map<String, Integer> m = new TreeMap<String, Integer>();
+	Map<String, Integer> m = new HashMap<String, Integer>();
 
 	public GeneralWordCounter(Set<String> set) {
 		stopwords = set;
@@ -25,12 +25,14 @@ public class GeneralWordCounter implements TextProcessor {
 		if(m.containsKey(word) == false) {
 			m.put(word, 0);
 		}
-		for(String s : m.keySet()) {
+		m.put(word, m.get(word).intValue() + 1);
+		
+		/*for(String s : m.keySet()) {
 			if(s.equals(word)) {
 				int i = m.get(s).intValue() + 1;
 				m.put(s, i);
 			}
-		}
+		}*/
 	}
 
 	@Override
