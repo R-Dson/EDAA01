@@ -13,14 +13,17 @@ public class BinarySearchTree<E> {
 	 * Constructs an empty binary search tree.
 	 */
 	public BinarySearchTree() {
-		
+		root = null;
+		size = 0;
 	}
 	
 	/**
 	 * Constructs an empty binary search tree, sorted according to the specified comparator.
 	 */
 	public BinarySearchTree(Comparator<E> comparator) {
-		
+		root = null;
+		size = 0;
+		ccomparator = comparator;
 	}
 
 	/**
@@ -29,7 +32,45 @@ public class BinarySearchTree<E> {
 	 * @return true if the the element was inserted
 	 */
 	public boolean add(E x) {
-		return false;
+		if(x == null)
+			return false;
+		if(root == null) {
+			root = new BinaryNode<E>(x);
+			return true;
+		}
+		return compareNodes(root, x);
+	}
+	
+	private boolean compareNodes(BinaryNode<E> n, E x) {
+
+		int compare = ccomparator.compare(x, n.element);
+		boolean temp = false;
+		
+		if(compare == 0) {
+			return temp;
+		}
+		
+		if(compare < 0) {
+			if(n.left != null) {
+				temp = compareNodes(n.left, x);
+			}
+			else {
+				n.left = new BinaryNode<E>(x);
+				temp = true;
+			}
+		}
+		else {
+			if(n.right != null) {
+				temp = compareNodes(n.right, x);
+			}
+			else{
+				n.right = new BinaryNode<E>(x);
+				temp = true;
+			}
+		}
+		
+		return temp;
+		
 	}
 	
 	/**
@@ -37,7 +78,25 @@ public class BinarySearchTree<E> {
 	 * @return the height of the tree
 	 */
 	public int height() {
-		return 0;
+		int i = 0;
+		if(root != null) {
+			i = treeCounter(root, i);
+		}
+		return i;
+	}
+	
+	private int treeCounter(BinaryNode<E> n, int count) {
+		int count1 = 1;
+		int count2 = 1;
+		
+		if(n.left != null) {
+			count1 = treeCounter(n.left, count + 1);
+		}
+		if(n.right != null) {
+			count2 = treeCounter(n.left, count + 1);
+		}
+		
+		return Math.max(count1, count2);
 	}
 	
 	/**
@@ -45,21 +104,33 @@ public class BinarySearchTree<E> {
 	 * @return the number of elements in this tree
 	 */
 	public int size() {
-		return 0;
+		return size;
 	}
 	
 	/**
 	 * Removes all of the elements from this list.
 	 */
 	public void clear() {
-		
+		root = null;
 	}
 	
 	/**
 	 * Print tree contents in inorder.
 	 */
 	public void printTree() {
-
+		if(root == null)
+			return;
+		printNode(root);
+	}
+	
+	private void printNode(BinaryNode<E> n) {
+		if(n.left != null) {
+			printNode(n.left);
+		}
+		System.out.println(n.element);
+		if(n.right != null) {
+			printNode(n.right);
+		}
 	}
 
 	/** 

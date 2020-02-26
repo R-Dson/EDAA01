@@ -76,36 +76,35 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 			QueueNode<E> temp = last.next;
 			last.next = temp.next;
 			size--;
-			if(size == 0) {
+			if (size == 0) {
 				last = null;
 			}
 		}
 
 		return e;
 	}
-	
+
 	public void append(FifoQueue<E> q) {
 		QueueNode<E> e = null;
-		if(q != null) {
-			if(q.size() == 0) {
-				if(q.last == last) {
-					throw new IllegalArgumentException();
+		if (q != null) {
+			if (q.size() == 0) {
+				if (q.last == last) {
+						throw new IllegalArgumentException();
 				}
 				return;
 			}
 
-			if(this.size == 0)
-			{
+			if (this.size == 0) {
 				last = q.last;
 				size = q.size;
 				q.last = null;
 				q.size = 0;
 				return;
 			}
-			
-			if(this.last != q.last) {
+
+			if (this.last != q.last) {
 				size = size + q.size();
-				
+
 				e = last.next;
 				last.next = q.last.next;
 				last = q.last;
@@ -114,11 +113,12 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 				q.size = 0;
 				return;
 			}
-			
+
 			else {
 				throw new IllegalArgumentException();
 			}
 		}
+		
 	}
 
 	/**
@@ -144,29 +144,29 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 
 		private QueueNode<E> pos;
 		int count = 0;
-		
+
 		public QueueIterator() {
-			if(last != null) {
+			if (last != null) {
 				pos = last.next;
-			}else {
+			} else {
 				pos = null;
 			}
 		}
 
 		@Override
 		public boolean hasNext() {
-			
+
 			if (count < size) {
 				return true;
-			}else {
+			} else {
 				return false;
-			}		
+			}
 
 		}
 
 		@Override
 		public E next() {
-			if(hasNext()) {
+			if (hasNext()) {
 				E e = pos.element;
 				pos = pos.next;
 				count++;
