@@ -26,8 +26,14 @@ public class Side {
 	
 	@Override
 	public boolean equals(Object temp) {
-
-		return this.hashCode() == temp.hashCode();
+		if(p1.equals(((Side) temp).p1) && p2.equals(((Side) temp).p2)) {
+			return true;
+		}
+		if(p1.equals(((Side) temp).p2) && p2.equals(((Side) temp).p1)) {
+			return true;
+		}
+		return false;
+		
 	}
 
 }

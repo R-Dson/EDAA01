@@ -44,8 +44,7 @@ public class mountain extends Fractal {
 		}else{
 			int midYFromP1 = 1/3*( p3.getY()+ p2.getY() - 2*p1.getY()) + p1.getY();
 			int random =(int) RandomUtilities.randFunc(midYFromP1/50);
-
-			
+				
 			int x1 = (p2.getX()-p1.getX())/2 + p1.getX();
 			int y1 = (int) ((p2.getY()-p1.getY())/2 + p1.getY() + random);
 			int x2 = (p3.getX()-p2.getX())/2 + p2.getX();
@@ -79,11 +78,11 @@ public class mountain extends Fractal {
 				map.put(new Side(p3, p1), temp3);
 			}
 			
-			
 			mountainLine(turtle, order-1,p1 ,temp1, temp3);
 			mountainLine(turtle, order-1,temp1 ,p2 , temp2);
 			mountainLine(turtle, order-1,temp2 , p3, temp3);
 			mountainLine(turtle, order-1,temp1 ,temp2, temp3);
+
 		}
 		
 	}
