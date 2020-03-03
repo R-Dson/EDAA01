@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import map.Map;
+import map.SimpleHashMap;
 
 public class TestSimpleHashMap {
 	Map<Integer, Integer> m;
@@ -21,9 +22,9 @@ public class TestSimpleHashMap {
 
 	@Before
 	public void setUp() throws Exception {
-//		m = new SimpleHashMap<Integer, Integer>(10);
-//		m16 = new SimpleHashMap<Integer, Integer>();
-//		s = new SimpleHashMap<String, Integer>();
+		m = new SimpleHashMap<Integer, Integer>(10);
+		m16 = new SimpleHashMap<Integer, Integer>();
+		s = new SimpleHashMap<String, Integer>();
 	}
 
 	@After
@@ -50,6 +51,7 @@ public class TestSimpleHashMap {
 	public final void testPutSameIndex() {
 		m16.put(1, 1);
 		m16.put(17, 17);
+		System.out.println(m16.size());
 		assertEquals("wrong size():", 2, m16.size());
 		assertEquals("key not found in map: 1", Integer.valueOf(1), m16.get(1));
 		assertEquals("key not found in map: 17", Integer.valueOf(17), m16.get(17));
