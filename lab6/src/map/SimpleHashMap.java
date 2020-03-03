@@ -1,10 +1,31 @@
 package map;
 
+import java.util.HashSet;
+
 public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	Entry<K, V>[] entries;
 	double LoadFactor;
 	int size;
+
+	public static void main(String[] args) {
+		SimpleHashMap<Integer, Integer> map = new SimpleHashMap<>();
+		SimpleHashMap<String, Integer> mapString = new SimpleHashMap<>();
+		for (int i = 0; i < 3; i++) {
+			map.put(16 * i, 16 * i);
+		}
+
+		java.util.Random random = new java.util.Random(123456);
+		HashSet<Integer> randNbrs = new HashSet<Integer>();
+		
+		for (int i = 0; i < 10; i++) { int r = random.nextInt(10000); map.put(r, r);
+		randNbrs.add(r); }
+		 
+		map.remove(0);
+
+		System.out.println(map.show());
+		System.out.println(map.size());
+	}
 
 	public static class Entry<K, V> implements Map.Entry<K, V> {
 		private V value;
@@ -73,11 +94,15 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	private void rehash() {
 		Entry<K, V>[] tempor = entries;
-		entries = (Entry<K, V>[]) new Entry[entries.length * 2];
+		this.entries = (Entry<K, V>[]) new Entry[entries.length * 2];
 		this.LoadFactor = LoadFactor * 2;
 		for (Entry<K, V> temp : tempor) {
-			if (temp == null) {
-			} else {
+			if (temp != null) {
+				this.put(temp.getKey(), temp.getValue());
+				while (temp.next != null) {
+					this.put(temp.getKey(), temp.getValue());
+					temp = temp.next;
+				}
 				this.put(temp.getKey(), temp.getValue());
 			}
 		}
@@ -106,8 +131,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	private V putRec(Entry<K, V> entry, Entry<K, V> newEntry, int index) {
 		V oldValue = null;
-		if (entry.getKey().equals( newEntry.getKey())) {
-/*		if ( ((Comparable<K>) entry.getKey() ).compareTo( newEntry.getKey()) == 0) {*/
+		if (entry.getKey().equals(newEntry.getKey())) {
 			oldValue = ((V) entry.getValue());
 			entry.setValue(newEntry.getValue());
 		} else if (entry.next == null) {
@@ -117,7 +141,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 				size = 0;
 				rehash();
 			}
-			
+
 		} else {
 			oldValue = putRec(entry.next, newEntry, index);
 		}
@@ -126,7 +150,30 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object arg0) {
-		// TODO Auto-generated method stub
+		int index = index((K) arg0);
+		Entry<K, V> n = entries[index];
+		V v;
+		if (n == null) { // listan är null
+			return null;
+		} else if (n.getKey().equals(arg0)) { // key finns i det första elementet i listan
+			v = n.getValue();
+
+			entries[index] = entries[index].next;
+			size--;
+			return v;
+		} else if (n.next != null) { // key finns senare i listan
+
+			while (n.next != null) {
+				if (n.next.getKey().equals(arg0)) {
+					v = n.next.getValue();
+					n.next = n.next.next;
+					size--;
+					return v;
+				}
+				n = n.next;
+			}
+
+		}
 		return null;
 	}
 
@@ -134,50 +181,30 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	public int size() {
 		return size;
 	}
-	
-	
-	/*public int size() {
-		int size = 0;
-		for (int i = 0; i < entries.length; i++) {
-			if (entries[i] != null) {
-				size = size + sizeRec(entries[i]);
-			}
-		}
-		return size;
-	}*/
 
 	public String show() {
-		String string = "";
+		StringBuilder s = new StringBuilder();
+		Entry<K, V> n;
 		for (int i = 0; i < entries.length; i++) {
-			string = string + recShow(entries[i]);
-			string = string + "\n";
+			s.append(i + "     ");
+			n = entries[i];
+			while (n != null) {
+				s.append(n.toString());
+				if (n.next != null) {
+					s.append(", ");
+				}
+				n = n.next;
+			}
+			s.append("\n");
 		}
-		return string;
+		return s.toString();
 	}
 
-	private String recShow(Entry<K, V> entry) {
-		if (entry.next == null) {
-			return entry.toString() + "  ";
-		} else {
-			return recShow(entry.next);
-		}
-	}
-
-	/*private int sizeRec(Entry<K, V> entry) {
-		if (entry.next == null) {
-			return 1;
-		} else {
-			return sizeRec(entry.next);
-		}
-	}*/
 
 	private int index(K key) {
 		int hashCode = key.hashCode() % entries.length;
-		if (key.hashCode() == Integer.MIN_VALUE) {
-			hashCode = (-entries.length - ((Integer) Integer.MIN_VALUE)) % entries.length;
-		}
 		if (hashCode < 0) {
-			hashCode = -key.hashCode() % entries.length;
+			hashCode = hashCode + entries.length;
 		}
 		return hashCode;
 	}
@@ -192,7 +219,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	private Entry<K, V> findRec(Entry<K, V> entry, K key) {
 		Entry<K, V> temp = null;
-		if (entry.getKey() == key) {
+		if (entry.getKey().equals(key)) {
 			return entry;
 		}
 		if (entry.next != null) {
